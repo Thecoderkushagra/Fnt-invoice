@@ -1,9 +1,22 @@
-function App() {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/landingPage/LandingPage";
+import Dashboard from "./pages/Dashboard";
+import MainPage from "./pages/MainPage";
+import Menubar from "./components/Menubar";
+import { Toaster } from "react-hot-toast"; // Assuming you're using react-hot-toast
 
-
+const App = () => {
   return (
-    <div className="container">hii the app is in dev mode</div>
-  )
-}
+    <BrowserRouter>
+      <Menubar />
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/generate" element={<MainPage />} /> {/* Fixed typo */}
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
