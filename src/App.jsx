@@ -3,7 +3,7 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import Dashboard from "./pages/Dashboard";
 import MainPage from "./pages/MainPage";
 import Menubar from "./components/Menubar";
-import { Toaster } from "react-hot-toast"; // Assuming you're using react-hot-toast
+import { Toaster } from "react-hot-toast"; 
 
 const App = () => {
   return (
@@ -13,7 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/generate" element={<MainPage />} /> {/* Fixed typo */}
+        <Route path="/generate" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
   );
