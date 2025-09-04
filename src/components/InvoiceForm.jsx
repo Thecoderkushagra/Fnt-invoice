@@ -1,5 +1,4 @@
 import { Trash2 } from "lucide-react";
-import { allAsset } from "../assets/asset";
 
 const InvoiceForm = () => {
     return (
