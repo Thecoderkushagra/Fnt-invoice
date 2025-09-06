@@ -1,6 +1,25 @@
 import { Trash2 } from "lucide-react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const InvoiceForm = () => {
+    const { invoiceData, setInvoiceData } = useContext(AppContext)
+
+    const addItem = () => {
+        setInvoiceData((prev) => ({
+            ...prev,
+            items: [
+                ...prev.items,
+                { name:"", qty:"", amount:"", description:"", total:"" }
+            ]
+        }))
+    }
+
+    const deleteItem = (index) => {
+        const items = invoiceData.items.filter((_, i) => i !== index);
+        setInvoiceData((prev) => ({...prev, items}));
+    }
+
     return (
         <div className="incoiceform container py-4">
             <div className="mb-4">
@@ -83,7 +102,8 @@ const InvoiceForm = () => {
 
             <div className="mb-4">
                 <h5>Item Detail</h5>
-                <div className="card p-3 mb-3">
+                {invoiceData.items.map((item,index) => (
+                    <div key={index} className="card p-3 mb-3">
                     <div className="row g-3 mb-2">
                         <div className="col-md-3">
                             <input type="text" className="form-control" placeholder="Item Name" />
@@ -100,25 +120,28 @@ const InvoiceForm = () => {
                     </div>
                     <div className="d-flex gap-2">
                         <textarea className="form-control" placeholder="Description"></textarea>
-                        <button className="btn btn-outline-danger" type="button">
-                            <Trash2 size={18}/>
-                        </button>
+                        {invoiceData.items.length > 1 && (
+                            <button className="btn btn-outline-danger" type="button" onClick={() => deleteItem(index)}>
+                                <Trash2 size={18} />
+                            </button>
+                        )}
                     </div>
                 </div>
-                <button className="btn btn-primary" type="button" style={{background:"#5d00dfc3",borderColor: "#5d00dfc3"}}>Add Item</button>
+                ))}
+                <button onClick={addItem} className="btn btn-primary" type="button" style={{ background: "#5d00dfc3", borderColor: "#5d00dfc3" }}>Add Item</button>
             </div>
 
             <div className="mb-4">
                 <h5>Bank Account Details</h5>
                 <div className="row g-3">
-                    <div className="col-md-4">                       
+                    <div className="col-md-4">
                         <input type="text" className="form-control" placeholder="Account holder Name" />
                     </div>
                     <div className="col-md-4">
-                        <input type="text" className="form-control" placeholder="Account Number"/>
+                        <input type="text" className="form-control" placeholder="Account Number" />
                     </div>
                     <div className="col-md-4">
-                        <input type="text" className="form-control" placeholder="Branch/IFSC code"/>
+                        <input type="text" className="form-control" placeholder="Branch/IFSC code" />
                     </div>
                 </div>
             </div>
@@ -132,7 +155,7 @@ const InvoiceForm = () => {
                     </div>
                     <div className="d-flex justify-content-between align-item-center my-2">
                         <label htmlFor="taxTnput" className="me-2">Taxt Rate %</label>
-                        <input type="number" id="taxInput" className="form-control w-50 text-end" placeholder="2"/>
+                        <input type="number" id="taxInput" className="form-control w-50 text-end" placeholder="2" />
                     </div>
                     <div className="d-flex justify-content-between">
                         <span>Tax Amount</span>
