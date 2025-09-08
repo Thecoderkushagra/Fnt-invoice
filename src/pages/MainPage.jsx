@@ -2,15 +2,31 @@ import { Pencil } from "lucide-react";
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import InvoiceForm from "../components/InvoiceForm";
-import TemplateGrid from "../components/TemplateGrid.";
+import TemplateGrid from "../components/TemplateGrid";
+import toast from "react-hot-toast";
 
 const MainPage = () => {
     const [isEditingTitle, setIsEditingTitle] = useState(false);
-    const { invoiceTitle, setInvoiceTitle } = useContext(AppContext);
+    const { invoiceTitle, setInvoiceTitle, invoiceData, setInvoiceData, setSelectedTemplate } = useContext(AppContext);
+
+    const handleTemplateClick = (templateId) => {
+        const hasInvaledItem = invoiceData.items.some(
+            (item) => !item.qty || item.amount
+        );
+        if (hasInvaledItem) {
+            toast.error("Please enter Quantity and Amount for all the items");
+            return;
+        }
+        setSelectedTemplate(templateId);
+    }
 
     const handleTitleChange = (e) => {
         const newTitle = e.target.value;
         setInvoiceTitle(newTitle);
+        setInvoiceData((prev) => ({
+            ...prev,
+            title: newTitle,
+        }));
     }
 
     const handleTitleEdit = () => {
@@ -60,7 +76,7 @@ const MainPage = () => {
                     {/* template grid */}
                     <div className="col-12 col-lg-6 d-flex">
                         <div className="bg-white border rounded shadow-sm p-4 w-100">
-                            <TemplateGrid/>
+                            <TemplateGrid onTemplateClick={handleTemplateClick} />
                         </div>
                     </div>
                 </div>
