@@ -4,20 +4,24 @@ import { AppContext } from "../context/AppContext";
 import InvoiceForm from "../components/InvoiceForm";
 import TemplateGrid from "../components/TemplateGrid";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
     const [isEditingTitle, setIsEditingTitle] = useState(false);
     const { invoiceTitle, setInvoiceTitle, invoiceData, setInvoiceData, setSelectedTemplate } = useContext(AppContext);
 
+    const navigate = useNavigate();
+
     const handleTemplateClick = (templateId) => {
         const hasInvaledItem = invoiceData.items.some(
-            (item) => !item.qty || item.amount
+            (item) => !item.qty || !item.amount
         );
         if (hasInvaledItem) {
             toast.error("Please enter Quantity and Amount for all the items");
             return;
         }
         setSelectedTemplate(templateId);
+        navigate("/preview");
     }
 
     const handleTitleChange = (e) => {

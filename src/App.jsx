@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landingPage/LandingPage";
 import Dashboard from "./pages/Dashboard";
 import MainPage from "./pages/MainPage";
+import PreView from "./pages/PreviewPage"
 import Menubar from "./components/Menubar";
 import { Toaster } from "react-hot-toast"; 
 
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/generate" element={<MainPage />} />
+        <Route path="/preview" element={<PreView />} />
       </Routes>
     </BrowserRouter>
   );
