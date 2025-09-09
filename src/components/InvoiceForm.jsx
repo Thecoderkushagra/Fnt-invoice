@@ -36,14 +36,30 @@ const InvoiceForm = () => {
         }));
     }
 
-    // Handle item changes
+    // Handle item changes with automatic total calculation
     const handleItemChange = (index, field, value) => {
-        setInvoiceData((prev) => ({
-            ...prev,
-            items: prev.items.map((item, i) =>
-                i === index ? { ...item, [field]: value } : item
-            )
-        }));
+        setInvoiceData((prev) => {
+            const updatedItems = prev.items.map((item, i) => {
+                if (i === index) {
+                    const updatedItem = { ...item, [field]: value };
+                    
+                    // Auto-calculate total when qty or amount changes
+                    if (field === 'qty' || field === 'amount') {
+                        const qty = parseFloat(field === 'qty' ? value : updatedItem.qty) || 0;
+                        const amount = parseFloat(field === 'amount' ? value : updatedItem.amount) || 0;
+                        updatedItem.total = (qty * amount).toFixed(2);
+                    }
+                    
+                    return updatedItem;
+                }
+                return item;
+            });
+            
+            return {
+                ...prev,
+                items: updatedItems
+            };
+        });
     }
 
     // Handle "Same as Billing" checkbox
@@ -62,14 +78,16 @@ const InvoiceForm = () => {
     }
 
     const calculateTotal = () => {
-        const subtotal = invoiceData.items.reduce((sum, item) => sum + (item.total || 0), 0);
-        const taxRate = Number(invoiceData.tax || 0);
-        const taxAmount = (subtotal * taxRate)/100;
+        const subtotal = invoiceData.items.reduce((sum, item) => {
+            return sum + (parseFloat(item.total) || 0);
+        }, 0);
+        const taxRate = parseFloat(invoiceData.tax) || 0;
+        const taxAmount = (subtotal * taxRate) / 100;
         const grandTotal = subtotal + taxAmount;
-        return {subtotal, taxAmount, grandTotal}; 
+        return { subtotal, taxAmount, grandTotal }; 
     }
 
-    const {subtotal, taxAmount, grandTotal} = calculateTotal();
+    const { subtotal, taxAmount, grandTotal } = calculateTotal();
 
     // Fixed logo upload function
     const handleLogoUpload = (e) => {
@@ -185,7 +203,7 @@ const InvoiceForm = () => {
                     <div className="col-md-4">
                         <label htmlFor="invoiceNumber" className="form-label mb-2">Invoice Number</label>
                         <input type="text" disabled className="form-control" id="invoiceNumber"
-                            value={invoiceData.invoice.number} /> {/* Fixed: show number, not name */}
+                            value={invoiceData.invoice.number} />
                     </div>
                     <div className="col-md-4">
                         <label htmlFor="invoiceDate" className="form-label mb-2">Invoice Date</label>
@@ -224,8 +242,9 @@ const InvoiceForm = () => {
                             </div>
                             <div className="col-md-3">
                                 <input type="number" className="form-control" placeholder="Total"
-                                    onChange={(e) => handleItemChange(index, "total", e.target.value)}
-                                    value={item.total} />
+                                    value={item.total}
+                                    readOnly
+                                    style={{ backgroundColor: '#f8f9fa' }} />
                             </div>
                         </div>
                         <div className="d-flex gap-2">
@@ -296,7 +315,6 @@ const InvoiceForm = () => {
                         value={invoiceData.notes}></textarea>
                 </div>
             </div>
-            
         </div>
     )
 }

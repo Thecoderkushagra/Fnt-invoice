@@ -83,7 +83,7 @@ const PreviewPage = () => {
             <div className="flex-grow-1 overflow-auto d-flex justify-content-center align-item-start bg-light py-3">
                 <div ref={previewRef} className="invoice-preview"
                 >
-                    <InvoicePreview invoiceData={invoiceData} templates={selectedTemplate} />
+                    <InvoicePreview invoiceData={invoiceData} template={selectedTemplate} />
                 </div>
             </div>
         </div>
