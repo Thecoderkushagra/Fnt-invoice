@@ -6,7 +6,7 @@ import InvoicePreview from "../components/InvoicePreview";
 
 const PreviewPage = () => {
     const previewRef = useRef();
-    const { selectedTemplate, invoiceData } = useContext(AppContext);
+    const { selectedTemplate, invoiceData, setSelectedTemplate } = useContext(AppContext);
 
     return (
         <div className="previewpage container-fluid d-flex flex-column p-3 min-vh-100">
@@ -19,6 +19,7 @@ const PreviewPage = () => {
                         {`btn btn-sm rounded-pill p-2 
                         ${selectedTemplate === id ? "btn-warning" : "btn-outline-secondary"}`
                         }
+                        onClick={() => setSelectedTemplate(id)}
                     >
                         {lable}
                     </button>

@@ -11,7 +11,7 @@ const TemplateGrid = ({onTemplateClick}) => {
                     <div className="col-12 col-sm-6 col-lg-4" key={id}>
                         <div className="border rounded shadow-sm overflow-hidden template-hover cursor-pointer"
                         onClick={() => onTemplateClick(id)}>
-                            <img src={image} alt={lable} />
+                            <img src={image} alt={lable} style={{ maxHeight: "350px", width: "100%", objectFit: "contain" }} />
                             <div className="py-2 text-center fw-medium">
                                 {lable}
                             </div>

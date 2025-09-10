@@ -4,19 +4,15 @@ const Template1 = ({ data }) => {
   return (
     <div className="invoice template1">
       {/* Header */}
-      <div className="invoice-header">
-        <h2>{data.title || "Invoice"}</h2>
-        {data.companyLogo && <img src={data.companyLogo || "Logo"} alt="logo" className="company-logo" />}
-      </div>
-
-      {/* Company & Invoice Info */}
-      <div className="company-invoice">
-        <div>
-          <h5>{data.companyName}</h5>
+      <div className="header">
+        <div className="company-info">
+          {data.companyLogo && <img src={data.companyLogo} alt="logo" />}
+          <h3>{data.companyName}</h3>
           <p>{data.companyAddress}</p>
           <p>{data.companyPhone}</p>
         </div>
-        <div className="text-right">
+        <div className="invoice-info">
+          <h2>Invoice</h2>
           <p><b>Invoice #:</b> {data.invoiceName}</p>
           <p><b>Date:</b> {data.invoiceDate}</p>
           <p><b>Due:</b> {data.invoiceDueDate}</p>
@@ -24,76 +20,69 @@ const Template1 = ({ data }) => {
       </div>
 
       {/* Billing & Shipping */}
-      <div className="billing-shipping">
-        <div>
-          <h6>Bill To:</h6>
-          <p>{data.billingName}</p>
-          <p>{data.billingAddress}</p>
-          <p>{data.billingPhone}</p>
-        </div>
-        <div>
-          <h6>Ship To:</h6>
+      <div className="addresses">
+        <div className="address-box">
+          <h5>Shipped To</h5>
           <p>{data.shippingName}</p>
           <p>{data.shippingAddress}</p>
           <p>{data.shippingPhone}</p>
         </div>
+        <div className="address-box">
+          <h5>Billed To</h5>
+          <p>{data.billingName}</p>
+          <p>{data.billingAddress}</p>
+          <p>{data.billingPhone}</p>
+        </div>
       </div>
 
       {/* Items */}
-      <table className="invoice-table">
+      <table className="items">
         <thead>
           <tr>
-            <th>Item</th>
+            <th>Item # / Description</th>
             <th>Qty</th>
+            <th>Rate</th>
             <th>Amount</th>
-            <th>Total</th>
           </tr>
         </thead>
         <tbody>
-          {data.items.map((item, i) => (
-            <tr key={i}>
-              <td>{item.name}</td>
-              <td>{item.qty}</td>
-              <td>{data.currentSymbol}{item.amount.toFixed(2)}</td>
-              <td>{data.currentSymbol}{(item.qty * item.amount).toFixed(2)}</td>
+          {data.items && Array.isArray(data.items) && data.items.length > 0 ? (
+            data.items.map((item, i) => (
+              <tr key={i}>
+                <td><b>{item.name || "N/A"}</b>: {item.description || "N/A"}</td>
+                <td>{item.qty || 0}</td>
+                <td>${parseFloat(item.amount || 0).toFixed(2)}</td>
+                <td>${parseFloat(item.total || 0).toFixed(2)}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">No items available</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
 
       {/* Totals */}
       <div className="totals">
-        <table>
-          <tbody>
-            <tr>
-              <td>Subtotal</td>
-              <td className="text-right">{data.currentSymbol}{data.subtotal.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td>Tax ({data.tax}%)</td>
-              <td className="text-right">{data.currentSymbol}{data.taxAmmount.toFixed(2)}</td>
-            </tr>
-            <tr className="total-row">
-              <td>Total</td>
-              <td className="text-right">{data.currentSymbol}{data.total.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
+        <p><b>Sub Total:</b> {data.currentSymbol}{data.subtotal.toFixed(2)}</p>
+        <p><b>Tax ({data.tax}%):</b> {data.currentSymbol}{data.taxAmmount.toFixed(2)}</p>
+        <p className="total"><b>Total:</b> {data.currentSymbol}{data.total.toFixed(2)}</p>
       </div>
 
+      {/* Footer */}
+      <div className="footer">
+        <h5>Bank Account Details</h5>
+        <p>Account Holder: {data.accountName}</p>
+        <p>Account Number: {data.accountNumber}</p>
+        <p>IFSC/Branch Code: {data.accountIfsc}</p>
+      </div>
       {/* Notes */}
       {data.notes && (
         <div className="notes">
           <p><b>Notes:</b> {data.notes}</p>
         </div>
       )}
-
-      {/* Footer */}
-      <div className="footer">
-        <small>
-          Account: {data.accountName} | {data.accountNumber} | IFSC: {data.accountIfsc}
-        </small>
-      </div>
     </div>
   );
 };

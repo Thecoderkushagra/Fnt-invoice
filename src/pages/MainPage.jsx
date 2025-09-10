@@ -84,8 +84,6 @@ const MainPage = () => {
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     )

@@ -1,0 +1,91 @@
+.invoice.template2 {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.template2 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #2563eb;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.template2 .company-info img {
+  max-width: 90px;
+  margin-bottom: 6px;
+}
+
+.template2 .invoice-info h2 {
+  color: #2563eb;
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.template2 .addresses {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.template2 .address-box {
+  flex: 1;
+  background: #f1f5f9;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.template2 table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.template2 table th {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 10px;
+  text-align: left;
+}
+
+.template2 table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+}
+
+.template2 .totals {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.template2 .totals p {
+  margin: 4px 0;
+}
+
+.template2 .totals .total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.template2 .footer {
+  margin-top: 25px;
+  border-top: 2px solid #2563eb;
+  padding-top: 10px;
+  font-size: 0.95rem;
+}
+
+.template2 .notes {
+  margin-top: 15px;
+  padding: 10px;
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+  font-style: italic;
+}

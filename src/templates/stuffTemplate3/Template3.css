@@ -1,0 +1,86 @@
+.invoice.template3 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #fafafa;
+  color: #2d2d2d;
+  border: 1px solid #ddd;
+  padding: 30px;
+  border-radius: 6px;
+}
+
+.template3 .header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #9ca3af;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.template3 .company-info img {
+  max-width: 80px;
+}
+
+.template3 .invoice-info h2 {
+  font-size: 1.6rem;
+  color: #374151;
+}
+
+.template3 .addresses {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.template3 .address-box {
+  flex: 1;
+  padding: 12px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+.template3 table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.template3 table th {
+  background: #e5e7eb;
+  color: #111827;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.template3 table td {
+  border: 1px solid #d1d5db;
+  padding: 10px;
+}
+
+.template3 .totals {
+  text-align: right;
+}
+
+.template3 .totals p {
+  margin: 4px 0;
+}
+
+.template3 .totals .total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+.template3 .footer {
+  margin-top: 25px;
+  border-top: 1px solid #9ca3af;
+  padding-top: 10px;
+}
+
+.template3 .notes {
+  margin-top: 15px;
+  padding: 10px;
+  background: #f9fafb;
+  border-left: 4px solid #9ca3af;
+  font-style: italic;
+}

@@ -1,0 +1,79 @@
+.invoice.template4 {
+  font-family: 'Helvetica Neue', sans-serif;
+  background: #f9fff9;
+  border: 2px solid #065f46;
+  padding: 20px;
+  border-radius: 8px;
+  color: #064e3b;
+}
+
+.template4 .header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #065f46;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+}
+
+.template4 .company-info img {
+  max-width: 80px;
+}
+
+.template4 h2 {
+  color: #047857;
+}
+
+.template4 .addresses {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.template4 .address-box {
+  width: 48%;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.template4 table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.template4 table th {
+  background: #047857;
+  color: white;
+  padding: 8px;
+}
+
+.template4 table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.template4 .totals {
+  text-align: right;
+}
+
+.template4 .totals .total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #047857;
+}
+
+.template4 .footer {
+  margin-top: 20px;
+  border-top: 1px solid #065f46;
+  padding-top: 10px;
+}
+
+.template4 .notes {
+  margin-top: 15px;
+  padding: 10px;
+  background: #75ffd82f;
+  border-left: 4px solid #065f46;
+  font-style: italic;
+}
