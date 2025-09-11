@@ -1,12 +1,40 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { templates } from "../assets/asset";
-import { ArrowBigLeft, Download, Mail, Save, Trash } from "lucide-react";
+import { ArrowBigLeft, Download, Loader, Mail, Save, Trash } from "lucide-react";
 import InvoicePreview from "../components/InvoicePreview";
+import { saveInvoice } from "../service/invoiceService";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PreviewPage = () => {
     const previewRef = useRef();
-    const { selectedTemplate, invoiceData, setSelectedTemplate } = useContext(AppContext);
+    const { selectedTemplate, invoiceData, setSelectedTemplate, baseURL } = useContext(AppContext);
+    const [ loding, setLoding ] = useState(false);
+    const navigate = useNavigate();
+
+    const handelSaveAndExit = async() => {
+        try {
+            setLoding(true);
+            // create thumbnail
+            const payload = {
+                ...invoiceData,
+                template: selectedTemplate
+            }
+            const response = await saveInvoice(baseURL, payload);
+            if(response.status === 200) {
+                toast.success("Invoice saved Successfully")
+                navigate("/dashboard");
+            }else {
+                toast.error("Something went wrong")
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Fail to save invoice")
+        }finally{
+            setLoding(false);
+        }
+    }
 
     return (
         <div className="previewpage container-fluid d-flex flex-column p-3 min-vh-100">
@@ -29,14 +57,16 @@ const PreviewPage = () => {
             {/* list of action buttons */}
             <div className="d-flex flex-wrap justify-content-center gap-2 mt-3">
                 <button
-                    className="
-                    btn btn-primary 
-                    d-flex 
-                    align-item-center 
-                    justify-content-center
-                    gap-2"
+                    className="btn btn-primary gap-2
+                    d-flex align-item-center justify-content-center"
+                    onClick={handelSaveAndExit} disabled={loding}
                 >
-                    <Save /> Save and Exit
+                    {loding && <Loader className="me-2 spin-animation"/>}
+                    {loding ? "Saving...": (
+                        <>
+                            <Save /> Save and Exit
+                        </>
+                    )}
                 </button>
 
                 <button
