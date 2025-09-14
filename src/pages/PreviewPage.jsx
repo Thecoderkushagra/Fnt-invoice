@@ -8,11 +8,13 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { uploadInvoiceThumbnail } from "../service/cloudnaryService";
 import html2canvas from "html2canvas";
+import { generatePdfFromElement } from "../Utils/pdfUtils";
 
 const PreviewPage = () => {
     const previewRef = useRef();
     const { selectedTemplate, invoiceData, setSelectedTemplate, baseURL } = useContext(AppContext);
     const [loding, setLoding] = useState(false);
+    const [downloading, setDownloading] = useState(false);
     const navigate = useNavigate();
 
     const handelSaveAndExit = async () => {
@@ -70,6 +72,18 @@ const PreviewPage = () => {
         }
     };
 
+    const handleDownloadPdf = async () => {
+        if (!previewRef.current) return;
+        try {
+            setDownloading(true);
+            await generatePdfFromElement(previewRef.current, `invoice_${Date.now}.pdf`);
+        } catch (error) {
+            toast.error("Fail to generate invoices")
+        } finally {
+            setDownloading(false);
+        }
+    };
+
     return (
         <div className="previewpage container-fluid d-flex flex-column p-3 min-vh-100">
             {/* action button */}
@@ -103,46 +117,41 @@ const PreviewPage = () => {
                     )}
                 </button>
 
-                <button
-                    className="
-                    btn btn-danger 
-                    d-flex 
-                    align-item-center 
-                    justify-content-center
-                    gap-2"
+                {invoiceData.id && <button
+                    className="btn btn-danger gap-2
+                    d-flex align-item-center justify-content-center"
                     onClick={handleDelete}
                 >
                     <Trash /> Delete Invoice
                 </button>
+                }
 
                 <button className="
-                    btn btn-secondary 
-                    d-flex 
-                    align-item-center 
-                    justify-content-center
-                    gap-2"
+                    btn btn-secondary gap-2
+                    d-flex align-item-center justify-content-center"
+                    onClick={() => navigate("/dashboard")}
                 >
                     <ArrowBigLeft />Back to Dashboard
                 </button>
 
                 <button className="
-                    btn btn-info 
-                    d-flex 
-                    align-item-center 
-                    justify-content-center
-                    gap-2"
+                    btn btn-info gap-2
+                    d-flex align-item-center justify-content-center"
                 >
                     <Mail /> Send Email
                 </button>
 
                 <button className="
-                    btn btn-success 
-                    d-flex 
-                    align-item-center 
-                    justify-content-center
-                    gap-2"
+                    btn btn-success gap-2
+                    d-flex align-item-center justify-content-center"
+                    onClick={handleDownloadPdf} disabled={loding}
                 >
-                    <Download /> Download PDF
+                    {loding && <Loader className="me-2 spin-animation" />}
+                    {loding ? "Downloading..." : (
+                        <>
+                            <Download /> Download PDF
+                        </>
+                    )}                  
                 </button>
             </div>
 
