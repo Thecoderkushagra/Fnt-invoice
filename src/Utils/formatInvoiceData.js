@@ -54,3 +54,14 @@ export const formatInvoiceData = (invoiceData) => {
         total
     };
 };
+
+export const formatDate = (dateStr) => {
+    if (!dateStr) return "N/A";
+
+    const date = new Date(dateStr);
+    date.toLocaleDateString("en-GB",{
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+    })
+}

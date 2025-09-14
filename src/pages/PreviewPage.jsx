@@ -3,38 +3,72 @@ import { AppContext } from "../context/AppContext";
 import { templates } from "../assets/asset";
 import { ArrowBigLeft, Download, Loader, Mail, Save, Trash } from "lucide-react";
 import InvoicePreview from "../components/InvoicePreview";
-import { saveInvoice } from "../service/invoiceService";
+import { deleteInvoice, saveInvoice } from "../service/invoiceService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { uploadInvoiceThumbnail } from "../service/cloudnaryService";
+import html2canvas from "html2canvas";
 
 const PreviewPage = () => {
     const previewRef = useRef();
     const { selectedTemplate, invoiceData, setSelectedTemplate, baseURL } = useContext(AppContext);
-    const [ loding, setLoding ] = useState(false);
+    const [loding, setLoding] = useState(false);
     const navigate = useNavigate();
 
-    const handelSaveAndExit = async() => {
+    const handelSaveAndExit = async () => {
         try {
             setLoding(true);
-            // create thumbnail
+            const canvas = await html2canvas(previewRef.current, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#fff',
+                scrollY: -window.scrollY,
+            });
+            const imageData = canvas.toDataURL("image/png");
+            const thumbnailUrl = await uploadInvoiceThumbnail(imageData);
             const payload = {
                 ...invoiceData,
+                thumbnailUrl,
                 template: selectedTemplate
             }
             const response = await saveInvoice(baseURL, payload);
-            if(response.status === 200) {
+            if (response.status === 200) {
                 toast.success("Invoice saved Successfully")
                 navigate("/dashboard");
-            }else {
+            } else {
                 toast.error("Something went wrong")
             }
         } catch (error) {
             console.log(error);
             toast.error("Fail to save invoice")
-        }finally{
+        } finally {
             setLoding(false);
         }
     }
+
+    const handleDelete = async () => {
+        if (!invoiceData.id) {
+            toast.error("Cannot delete invoice — missing ID.");
+            return;
+        }
+
+        try {
+            setLoding(true); // optional: reuse loading state to disable buttons
+            const response = await deleteInvoice(baseURL, invoiceData.id);
+
+            if (response.status === 200 || response.status === 204) {
+                toast.success("Invoice deleted successfully.");
+                navigate("/dashboard");
+            } else {
+                toast.error("Unable to delete invoice.");
+            }
+        } catch (error) {
+            console.error("Failed to delete invoice:", error);
+            toast.error("Failed to delete invoice.");
+        } finally {
+            setLoding(false);
+        }
+    };
 
     return (
         <div className="previewpage container-fluid d-flex flex-column p-3 min-vh-100">
@@ -61,8 +95,8 @@ const PreviewPage = () => {
                     d-flex align-item-center justify-content-center"
                     onClick={handelSaveAndExit} disabled={loding}
                 >
-                    {loding && <Loader className="me-2 spin-animation"/>}
-                    {loding ? "Saving...": (
+                    {loding && <Loader className="me-2 spin-animation" />}
+                    {loding ? "Saving..." : (
                         <>
                             <Save /> Save and Exit
                         </>
@@ -76,6 +110,7 @@ const PreviewPage = () => {
                     align-item-center 
                     justify-content-center
                     gap-2"
+                    onClick={handleDelete}
                 >
                     <Trash /> Delete Invoice
                 </button>
@@ -87,7 +122,7 @@ const PreviewPage = () => {
                     justify-content-center
                     gap-2"
                 >
-                    <ArrowBigLeft/>Back to Dashboard
+                    <ArrowBigLeft />Back to Dashboard
                 </button>
 
                 <button className="
