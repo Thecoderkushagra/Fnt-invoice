@@ -4,13 +4,13 @@ import jsPDF from "jspdf";
 export const generatePdfFromElement = async (
   element,
   filename = "invoice.pdf",
-  returnBlob = false
+  returnBlob
 ) => {
   const canvas = await html2canvas(element, {
     scale: 2,
     useCORS: true,
     backgroundColor: "#fff",
-    scrollY: -window.scrollY, // optional: can be removed if causing issues
+    scrollY: -window.scrollY,
   });
 
   const imgData = canvas.toDataURL("image/jpeg");
@@ -23,8 +23,10 @@ export const generatePdfFromElement = async (
   pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
   if (returnBlob) {
-    return pdf.output("blob");
+    // ✅ Return a proper Blob so FormData can handle it
+    const pdfBlob = pdf.output("blob");
+    return new File([pdfBlob], filename, { type: "application/pdf" });
   } else {
-    pdf.save(filename);
+    pdf.save(filename); 
   }
 };

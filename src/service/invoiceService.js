@@ -11,3 +11,7 @@ export const fetchInvoice = (baseUrl) => {
 export const deleteInvoice = (baseUrl,id) => {
     return axios.delete(`${baseUrl}/invoice/${id}`);
 }
+
+export const sendEmail = (baseUrl, payload) => {
+    return axios.post(`${baseUrl}/invoice/sendPdf`, payload);
+}
