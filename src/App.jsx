@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import MainPage from "./pages/MainPage";
 import PreView from "./pages/PreviewPage"
 import Menubar from "./components/Menubar";
+import LogPage from "./pages/LogPage";
 import { Toaster } from "react-hot-toast"; 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/generate" element={<MainPage />} />
         <Route path="/preview" element={<PreView />} />
+        <Route path="/login" element={<LogPage />} />
       </Routes>
     </BrowserRouter>
   );

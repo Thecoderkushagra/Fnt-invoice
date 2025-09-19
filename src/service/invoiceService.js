@@ -15,3 +15,15 @@ export const deleteInvoice = (baseUrl,id) => {
 export const sendEmail = (baseUrl, payload) => {
     return axios.post(`${baseUrl}/invoice/sendPdf`, payload);
 }
+
+export const SignupApi = (baseUrl, payload) => {
+    return axios.post(`${baseUrl}/public/signup`, payload)
+}
+
+export const varifyOtpApi = (baseUrl, payload) => {
+    return axios.post(`${baseUrl}/public/varify-otp`, payload)
+}
+
+export const loginUserApi = (baseUrl, payload) => {
+    return axios.post(`${baseUrl}/public/login`, payload)
+}
