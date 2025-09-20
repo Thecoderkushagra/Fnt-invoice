@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
@@ -26,6 +27,7 @@ export const AppContextProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const baseURL = "http://localhost:8080";
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -48,6 +50,7 @@ export const AppContextProvider = ({ children }) => {
         localStorage.removeItem("userData");
         setUser(null);
         setIsAuthenticated(false);
+        navigate("/")
     };
 
     const contextValue = {
