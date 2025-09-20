@@ -5,19 +5,28 @@ import MainPage from "./pages/MainPage";
 import PreView from "./pages/PreviewPage"
 import Menubar from "./components/Menubar";
 import LogPage from "./pages/LogPage";
-import { Toaster } from "react-hot-toast"; 
+import { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
 
 const App = () => {
+  const { isAuthenticated } = useContext(AppContext);
   return (
     <BrowserRouter>
       <Menubar />
       <Toaster />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/generate" element={<MainPage />} />
-        <Route path="/preview" element={<PreView />} />
-        <Route path="/login" element={<LogPage />} />
+        {isAuthenticated &&
+          <>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/generate" element={<MainPage />} />
+            <Route path="/preview" element={<PreView />} />
+          </>}
+        {!isAuthenticated &&
+          <>
+            <Route path="/login" element={<LogPage />} />
+          </>}
       </Routes>
     </BrowserRouter>
   );

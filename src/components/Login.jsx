@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const { setHaveAcc, baseURL } = useContext(AppContext);
+    const { setHaveAcc, baseURL, login} = useContext(AppContext);
 
     const [loading, setLoading] = useState(false);
     const [loginData, setLoginData] = useState({ loginUser: "", loginPassword: "" });
@@ -31,9 +31,9 @@ const LoginPage = () => {
             };
 
             const response = await loginUserApi(baseURL, payload);
-            console.log(response?.data);
 
             if (response.status === 200) {
+                login(response.data.token, payload.userName);
                 toast.success("Login Successful!!");
                 navigate("/dashboard");
             } else {

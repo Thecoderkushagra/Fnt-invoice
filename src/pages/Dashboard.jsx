@@ -10,11 +10,12 @@ const Dashboard = () => {
     const [invoices, setInvoices] = useState([]);
     const { baseURL, setInvoiceData, setSelectedTemplate, setInvoiceTitle } = useContext(AppContext);
     const navigate = useNavigate();
+    const jwtToken = localStorage.getItem("authToken");
 
     useEffect(() => {
         const fetchInvoices = async () => {
             try {
-                const response = await fetchInvoice(baseURL);
+                const response = await fetchInvoice(baseURL, jwtToken);
                 setInvoices(response.data);
             } catch (error) {
                 toast.error("fail to load invoices")

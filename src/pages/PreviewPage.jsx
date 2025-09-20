@@ -21,6 +21,7 @@ const PreviewPage = () => {
     const [sendingEmail, setSendingEmail] = useState(false);
 
     const navigate = useNavigate();
+    const jwtToken = localStorage.getItem("authToken");
 
     const handleSaveAndExit = async () => {
         try {
@@ -41,7 +42,7 @@ const PreviewPage = () => {
                 template: selectedTemplate,
             };
 
-            const response = await saveInvoice(baseURL, payload);
+            const response = await saveInvoice(baseURL, payload, jwtToken);
             if (response.status === 200) {
                 toast.success("Invoice saved successfully");
                 navigate("/dashboard");
@@ -64,7 +65,7 @@ const PreviewPage = () => {
 
         try {
             setLoading(true);
-            const response = await deleteInvoice(baseURL, invoiceData.id);
+            const response = await deleteInvoice(baseURL, invoiceData.id, jwtToken);
 
             if (response.status === 200 || response.status === 204) {
                 toast.success("Invoice deleted successfully.");
@@ -129,7 +130,7 @@ const PreviewPage = () => {
             payload.append("pdfFile", pdfBlob);
             payload.append("recipientEmail", emailAddress);
 
-            const response = await sendEmail(baseURL, payload);
+            const response = await sendEmail(baseURL, payload, jwtToken);
             if (response.status === 200) {
                 toast.success(`Invoice sent successfully to ${emailAddress}`);
                 handleCloseEmailDialog();

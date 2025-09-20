@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const AppContext = createContext();
 
@@ -15,37 +15,40 @@ export const initialInvoiceData = {
         { name: "", qty: "", amount: "", description: "", total: "" }
     ],
     logo: ""
-}
+};
 
 export const AppContextProvider = ({ children }) => {
     const [invoiceTitle, setInvoiceTitle] = useState("New Invoice");
     const [invoiceData, setInvoiceData] = useState(initialInvoiceData);
     const [selectedTemplate, setSelectedTemplate] = useState("Template1");
-    const[ haveAcc, setHaveAcc] = useState(true);
-    // const [user, setUser] = useState(null);
-    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [haveAcc, setHaveAcc] = useState(true);
+    const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const baseURL = "http://localhost:8080";
 
-    // useEffect(() => {// Load token from localStorage if available
-    //     const token = localStorage.getItem("authToken");
-    //     if (token) {
-    //         setIsAuthenticated(true); // Optionally call backend to get user details
-    //     }
-    // }, []);
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        const savedUser = localStorage.getItem("userData");
+        if (token) {
+            setIsAuthenticated(true);
+            if (savedUser) setUser(JSON.parse(savedUser));
+        }
+    }, []);
 
-    // const login = (token, userData) => {
-    //     localStorage.setItem("authToken", token);
-    //     setUser(userData);
-    //     setIsAuthenticated(true);
-    // };
+    const login = (token, userData) => {
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("userData", JSON.stringify({ name: userData }));
+        setUser({ name: userData });
+        setIsAuthenticated(true);
+    };
 
-    // const logout = () => {
-    //     localStorage.removeItem("authToken");
-    //     setUser(null);
-    //     setIsAuthenticated(false);
-    // };
-
+    const logout = () => {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userData");
+        setUser(null);
+        setIsAuthenticated(false);
+    };
 
     const contextValue = {
         invoiceTitle, setInvoiceTitle,
@@ -53,7 +56,9 @@ export const AppContextProvider = ({ children }) => {
         selectedTemplate, setSelectedTemplate,
         initialInvoiceData,
         haveAcc, setHaveAcc,
-        baseURL, 
+        user, isAuthenticated,
+        login, logout,
+        baseURL
     };
 
     return (
