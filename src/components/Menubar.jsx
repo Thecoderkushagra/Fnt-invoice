@@ -7,6 +7,11 @@ const Menubar = () => {
     const navigate = useNavigate();
     const { isAuthenticated, logout } = useContext(AppContext);
 
+    const safeLogout = () => {
+        logout();
+        navigate("/");
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
             <div className="container py-2">
@@ -57,7 +62,7 @@ const Menubar = () => {
                             {isAuthenticated ? (
                                 <button 
                                     className="btn btn-danger rounded-pill px-4"
-                                    onClick={logout}
+                                    onClick={safeLogout}
                                 >
                                     Logout
                                 </button>

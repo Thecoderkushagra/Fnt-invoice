@@ -7,7 +7,7 @@ export const initialInvoiceData = {
     title: "New Invoice",
     billing: { name: "", phone: "", address: "" },
     shipping: { name: "", phone: "", address: "" },
-    invoice: { name: "", date: "", dueDate: "" },
+    invoice: { number: "", date: "", dueDate: "" },
     account: { name: "", number: "", ifsccode: "" },
     company: { name: "", number: "", address: "" },
     tax: 0,
@@ -27,7 +27,6 @@ export const AppContextProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const baseURL = "http://localhost:8080";
-    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -50,7 +49,6 @@ export const AppContextProvider = ({ children }) => {
         localStorage.removeItem("userData");
         setUser(null);
         setIsAuthenticated(false);
-        navigate("/")
     };
 
     const contextValue = {
