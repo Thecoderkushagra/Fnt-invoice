@@ -1,6 +1,19 @@
+import { useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
+import { AppContext } from '../../context/AppContext';
+import { useContext } from 'react';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AppContext);
+
+  const handleButton = () => {
+    if (isAuthenticated) {
+      navigate("/generate");
+    }
+    navigate("/login");
+  }
+
   const steps = [
     {
       number: 1,
@@ -191,8 +204,9 @@ const LandingPage = () => {
                     e.target.style.transform = 'scale(1)';
                     e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
                   }}
+                  onClick={handleButton}
                 >
-                  🚀 Generate Your First Invoice
+                  🚀 Generate Your Invoice
                 </button>
 
                 <button
@@ -428,6 +442,7 @@ const LandingPage = () => {
                     e.target.style.transform = 'scale(1)';
                     e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
                   }}
+                  onClick={handleButton}
                 >
                 Start Getting Invoices Now
                 </button>              

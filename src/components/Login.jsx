@@ -78,6 +78,7 @@ const LoginPage = () => {
                 type="button"
                 onClick={handleUserLogin}
                 style={{ cursor: "pointer", background: "#5d00dfc3", borderColor: "#5d00dfc3", width: "100%" }}
+                disabled={loading}
             >
                 {loading && <Loader className="me-2 spin-animation" />}
                 {loading ? "Logging..." : "Login"}

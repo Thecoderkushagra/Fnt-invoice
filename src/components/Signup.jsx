@@ -39,7 +39,7 @@ const Signup = () => {
 
             if (response.status === 200) {
                 toast.success("OTP Send success", response.data);
-                setOtpRecived(true); // Show OTP input field
+                setOtpRecived(true); 
             } else {
                 toast.error("Unexpected response:", response);
             }
@@ -58,10 +58,11 @@ const Signup = () => {
             payload.append("OTP",otpData.otpVarify);
             
             const response = await varifyOtpApi(baseURL, payload);
+            console.log(response);
 
             if (response.status === 200) {
+                handleAcc();
                 toast.success("SignUp successfully", response.data);
-                handleAcc // transer to login page
             } else {
                 toast.error("Unexpected response:", response);
             }
@@ -90,6 +91,7 @@ const Signup = () => {
                         className="btn btn-primary mt-3 mb-2" type="button"
                         style={{ background: "#5d00dfc3", borderColor: "#5d00dfc3", width: "100%", }}
                         onClick={handleOtp}
+                        disabled={loading}
                     >
                         Verify
                     </button>
@@ -130,6 +132,7 @@ const Signup = () => {
                         className="btn btn-primary mt-3 mb-2" type="button"
                         onClick={handleSignup}
                         style={{ background: "#5d00dfc3", borderColor: "#5d00dfc3", width: "100%", }}
+                        disabled={loading}
                     >
                         {loading && <Loader className="me-2 spin-animation" />}
                         {loading ? "Sending OTP..." : "SignUp"}
